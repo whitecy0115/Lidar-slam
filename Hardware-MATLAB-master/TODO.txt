@@ -1,0 +1,94 @@
+Default release : disable 3rd_support defines, rebuild all, run UpgradeDLL.bat and UpgradeDLLConfigPython.bat, git sync, download auto draft release, run hardwarex.bat (need MATLAB R2017b 64 bit and R2015b 32 bit,...), git sync
+3rd_support release : download auto draft release, prepare %USERPROFILE%\Downloads\hardwarex_with_3rd_support\, run hardwarex_with_3rd_support.bat (need MATLAB R2017b 64 bit and R2015b 32 bit, mavlink versions,...), upload hardwarex_with_3rd_support.zip
+
+Update Hardware-CPP, MATLAB, Python (check structures), in particular mavlink messages...
+
+char/array of char parameters : see GetInfoRequestRPLIDAR(), GetAllSupportedScanModesRPLIDAR...
+
+
+rplidar sdk only works in C++ while Matlab is checking the headers in C...
+Linux : might need to put full path for includepath in hardwarex_init.m when using local folders for sbgECom, MAVLinkSDK...
+auto test with UxVCtrl/UxVSim, SITL...
+Fix latest mavlink MAVPACKED mavlink_types.h (check if it is also a problem for Linux)...
+patchproto for linux and mac?->propose to run manually hardwarex_setup to generate a hardwarex_proto.m to be able to patch it, and change manually hardwarex_init.m to use the proto...?
+
+Warning: The data type 's_IO_markerPtr' used by structure s_IO_FILE does not exist.  The structure may not be usable. 
+> In loadlibrary
+  In hardwarex_init (line 19) 
+Warning: The data type 's_IO_FILEPtr' used by structure s_IO_FILE does not exist.  The structure may not be usable. 
+> In loadlibrary
+  In hardwarex_init (line 19) 
+Warning: The data type 'int8#' used by structure s_IO_FILE does not exist.  The structure may not be usable. 
+> In loadlibrary
+  In hardwarex_init (line 19) 
+Warning: The data type 's_IO_markerPtr' used by structure s_IO_marker does not exist.  The structure may not be usable. 
+> In loadlibrary
+  In hardwarex_init (line 19) 
+Warning: The data type 'FcnPtr' used by structure s_SbgInterface does not exist.  The structure may not be usable. 
+> In loadlibrary
+  In hardwarex_init (line 19) 
+Warning: The data type 'FcnPtr' used by structure s_SbgInterface does not exist.  The structure may not be usable. 
+> In loadlibrary
+  In hardwarex_init (line 19) 
+Warning: The data type 'FcnPtr' used by structure s_SbgInterface does not exist.  The structure may not be usable. 
+> In loadlibrary
+  In hardwarex_init (line 19) 
+Warning: The data type 'FcnPtr' used by structure s_SbgInterface does not exist.  The structure may not be usable. 
+> In loadlibrary
+  In hardwarex_init (line 19) 
+Warning: The data type 'FcnPtr' used by structure s_SbgEComHandle does not exist.  The structure may not be usable. 
+> In loadlibrary
+  In hardwarex_init (line 19) 
+Warning: The data type 'error' used by structure SBG does not exist.  The structure may not be usable. 
+> In loadlibrary
+  In hardwarex_init (line 19) 
+Warning: The data type 'error' used by structure NAV_PVT_PL_UBX does not exist.  The structure may not be usable. 
+> In loadlibrary
+  In hardwarex_init (line 19) 
+Warning: The data type 'error' used by structure NAV_PVT_PL_UBX does not exist.  The structure may not be usable. 
+> In loadlibrary
+  In hardwarex_init (line 19) 
+Warning: The data type 'error' used by structure NAV_PVT_PL_UBX does not exist.  The structure may not be usable. 
+> In loadlibrary
+  In hardwarex_init (line 19) 
+Warning: The data type 'error' used by structure NAV_SOL_PL_UBX does not exist.  The structure may not be usable. 
+> In loadlibrary
+  In hardwarex_init (line 19) 
+Warning: The data type 'error' used by structure NAV_STATUS_PL_UBX does not exist.  The structure may not be usable. 
+> In loadlibrary
+  In hardwarex_init (line 19) 
+Warning: The data type 'error' used by structure NAV_STATUS_PL_UBX does not exist.  The structure may not be usable. 
+> In loadlibrary
+  In hardwarex_init (line 19) 
+Warning: The data type 'error' used by structure NAV_STATUS_PL_UBX does not exist.  The structure may not be usable. 
+> In loadlibrary
+  In hardwarex_init (line 19) 
+
+RPLIDAR : faudrait que le code CPP récupère les données tout le temps dans un thread...
+
+Padding pour structures matlab et python de taille identique qu'il y ait 3rd ou pas, notamment SBG...
+
+Add roboteq, seanet, pathfinder matlab and python?
+UBX could be supported (need to define the structures in Python...)...
+
+critical sections should be everywhere especially for Pololu and SSC32...
+
+For the thread, only 1 device of the same type can be used...
+Simplify by gathering Create, Connect...?
+
+
+
+OLD
+
+patch hardwarex_proto.m for structures indicated in warnings...
+Bitfields 'error' in UBX...
+https://fr.mathworks.com/matlabcentral/answers/103180-why-do-i-get-warnings-when-loading-a-dll-with-loadlibrary-in-matlab-7-13-r2011b
+http://fr.mathworks.com/help/matlab/matlab_external/limitations-to-shared-library-support.html
+
+Crash matlab when exiting getotherscan...?->not seen recently on Windows...
+BSOD?->maybe solved with driver from https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers...
+RPLIDAR : Ne marche pas avec appli du fabricant parfois, on peut pas renommer le port car une autre application l'utilise, mais quelle autre...? Faut utiliser vieux SDK...
+
+libhardwarex.so vs hardwarex.so...?
+
+hardwarex_setup->error rplidar sdk C++->tweak rplidar struct (add padding when not using sdk?) so that size corresponds...?
